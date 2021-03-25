@@ -1,14 +1,14 @@
-resource "aws_security_group" "ssh-allow" {
-  name        = "ssh-allow"
+resource "aws_security_group" "ssh-ingress" {
+  name        = var.security_group_name
   description = "Allow ssh inbound traffic"
-  vpc_id      =  "vpc-c98f3ba2"
+  vpc_id      =  var.vpc_id
 
   ingress {
     description = "ssh from VPC"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["181.171.0.0/16"]
   }
 
   egress {
@@ -19,6 +19,6 @@ resource "aws_security_group" "ssh-allow" {
   }
 
   tags = {
-    Name = "ssh-allow"
+    Name = var.security_group_name
   }
 }

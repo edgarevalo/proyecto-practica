@@ -1,4 +1,4 @@
-resource "aws_security_group" "ssh-ingress" {
+resource "aws_security_group" "ssh-ingres" {
   name        = var.security_group_name
   description = "Allow ssh inbound traffic"
   vpc_id      =  var.vpc_id
@@ -21,4 +21,13 @@ resource "aws_security_group" "ssh-ingress" {
   tags = {
     Name = var.security_group_name
   }
+}
+
+######## VARIABLES #########
+
+variable "security_group_name" {
+  type = string
+}
+variable "vpc_id" {
+  type = string
 }

@@ -10,38 +10,8 @@ resource "aws_instance" "edgar-test" {
   security_groups = [ var.security_group_name ]
 }
 
-resource "null_resource" "connect_bastion" {
-  ######## CONEXION A LA INSTANCIA #######
-  connection {
-    type        = "ssh"
-    host        = aws_instance.edgar-test.public_ip
-    user        = "ec2-user"
-    private_key = file(var.key_path)
-
-  }
-  ######## INSTALACION DE PAQUETES #######
-
-  provisioner "remote-exec" {
-    inline = [
-    "sudo yum update -y",
-    "sudo yum install docker -y",
-    "sudo service docker start",
-    "sudo docker pull jenkins/jenkins",
-    "echo = Installed successfully"
-    ]
-    }
-  depends_on = ["aws_instance.edgar-test"]
-}
-
-
-
-
-
-
-
 
 ######## VARIABLES #########
-
 
 
 variable "key_name" {

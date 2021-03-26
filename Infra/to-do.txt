@@ -1,0 +1,4 @@
+TO DO:
+
+- crear un SG nuevo para la conexion a jenkins
+- crear un docker compose para el levantamiento correcto del container de jenkins

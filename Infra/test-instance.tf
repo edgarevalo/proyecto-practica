@@ -11,6 +11,7 @@ resource "aws_instance" "edgar-test" {
 }
 
 resource "null_resource" "connect_bastion" {
+  ######## CONEXION A LA INSTANCIA #######
   connection {
     type        = "ssh"
     host        = aws_instance.edgar-test.public_ip
@@ -18,6 +19,8 @@ resource "null_resource" "connect_bastion" {
     private_key = file(var.key_path)
 
   }
+  ######## INSTALACION DE PAQUETES #######
+
   provisioner "remote-exec" {
     inline = [
     "sudo yum update -y",
@@ -33,7 +36,7 @@ resource "null_resource" "connect_bastion" {
 
 
 
-######## INSTALACION DE PAQUETES #######
+
 
 
 

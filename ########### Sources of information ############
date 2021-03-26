@@ -1,0 +1,60 @@
+########### Sources of information ############
+
+### Vault ###
+
+- Managing Vault with Terraform
+
+https://www.youtube.com/watch?v=oy0aaPNu8VU&t=323s
+
+https://www.youtube.com/watch?v=m2tfC6lhUe0
+
+
+- Steps to configure VAULT
+
+	- export VAULT_ADDR= '127.0.0.1:8200'
+	- export VAULT_TOKEN= (token generado por el server de Vault)
+
+	- vault server ( se puede user el flag -dev para iniciarlo sin certificados, no recomendable para prod)
+	- vault login
+	- vault write aws/config/root access_key="llave de acceso" secret_key="clave secreta" region="region"
+	- vault write aws/roles/"nombre-del-rol" role_arns="arn del rol" credential_type=federation_token
+	- vault kv put secrets/appkey mykey="random_number"
+
+### Terraform Init ###
+
+Ejempplo:
+
+	variable "vault_aws_backend" {
+	  type = string
+	  description = "path to aws secrets engine"
+	  default = "aws"
+	}
+
+	variable "vault_aws_role"{
+	  type = string
+	  description = "name of aws role for credentials"
+	  default = "nombre-del-rol"
+	}
+
+	variable "aws_region"{
+	  type = string
+	  default = "us-east-1"
+	}
+
+	provider "vault" {
+	  #VAULT_ADDR Y VAULT_TOKEN seteados como variables de entorno
+	}
+
+	provider "aws"{
+	  region = var.aws_region
+	}
+
+	data "vault_generic_secret" "appkey" {
+	  path = "secret/appkey"
+	}
+
+	data "vault_aws_access_credentials" "creds" {
+	  backend = var.vault_aws_backend
+	  role = var.vault_aws_role
+	  type = "sts"
+	}

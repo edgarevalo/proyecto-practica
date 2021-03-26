@@ -5,7 +5,7 @@ resource "aws_instance" "edgar-test" {
   tags = {
     Name = "proyecto-de-prueba"
   }
-  key_name	= var.key_name
+  key_name	= "edgar-posta-2"
 
   security_groups = [ var.security_group_name ]
 
